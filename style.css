@@ -1,0 +1,9 @@
+.grid {
+    height: 70vh;
+    width: 80vw;
+    margin: auto;
+  }
+
+.headers {
+    text-align: center;
+}
