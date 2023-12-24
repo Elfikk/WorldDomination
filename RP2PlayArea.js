@@ -20,8 +20,8 @@ export class RP2PlayArea {
         // Initialises vertices in the graph.
 
         let id;
-        for (let y = 0; y < this.cols; y++) {
-            for (let x = 0; x < this.rows; x++) {
+        for (let y = 0; y < this.rows; y++) {
+            for (let x = 0; x < this.cols; x++) {
                 id = this.coordsToID(x, y);
                 this.graph.addVertex(id, id);
                 this.playersToLand.set(id, new Set([id]));
@@ -216,7 +216,7 @@ export class RP2PlayAreaUI {
         var gridContainer = document.querySelector('.grid');
         // console.log(gridContainer);
 
-        let celltot = this.rows * this.cols;
+        this.celltot = this.rows * this.cols;
 
         gridContainer.style.display = 'grid';
         gridContainer.style.gridTemplateRows = `repeat(${this.rows}, 1fr)`;
@@ -226,12 +226,12 @@ export class RP2PlayAreaUI {
         let column = 1;
         // let x, y;
         this.cells = [];
-        for (let i = 0; i < celltot; i++) {
+        for (let i = 0; i < this.celltot; i++) {
             let cell = document.createElement('div');
-            // cell.style.border = '1px solid black';
+            cell.style.border = '1px solid black';
             cell.style.textAlign = "center";
             cell.style.display = "flex";
-            
+
             cell.style.gridRow = row;
             cell.style.gridColumn = column;
 
@@ -242,7 +242,7 @@ export class RP2PlayAreaUI {
             // x = column - 1;
             // y = row - 1;
 
-            // cell.innerHTML = i + "," + i;
+            // cell.innerHTML = i;
 
             var rgbVals = this.gameGradient(i);
             var rgbString = rgbVals.toString();
@@ -286,11 +286,72 @@ export class RP2PlayAreaUI {
         var rgbSetter = "rgb(".concat(rgbString).concat(")")
         
         this.cells[vertexID].style.backgroundColor = rgbSetter;
-        // this.cells[vertexID].innerHTML = vertexID + "," + winnerID;
+        // this.cells[vertexID].innerHTML = winnerID;
+
+        this.updateVertexBorder(vertexID);
+
+        let neighbourIDs;
+        neighbourIDs = this.getCompassNeighboursIDs(vertexID);
+        for (const id of neighbourIDs) {
+            this.updateVertexBorder(id);
+        }
+
     }
+
+    getCompassNeighboursIDs(id) {
+        const coords = this.idToCoords(id);
+        let x,y;
+        [x, y] = coords;
+
+        let nCoord, eCoord, sCoord, wCoord;
+
+        nCoord = [x, mod(y - 1, this.rows)];
+        eCoord = [mod(x+1, this.cols), y];
+        sCoord = [x, mod(y + 1, this.rows)];
+        wCoord = [mod(x-1, this.cols), y];
+
+        let n,e,s,w;
+
+        n = this.coordsToID(...nCoord);
+        e = this.coordsToID(...eCoord);
+        s = this.coordsToID(...sCoord);
+        w = this.coordsToID(...wCoord);
+
+        return [n, e, s, w];
+    }    
+
+    updateVertexBorder(id) {
+        
+        var neswBorders = new Array(4);
+        const baseColour = this.cells[id].style.backgroundColor;
+
+        // let neighbourIDs;
+        const neighbourIDs = this.getCompassNeighboursIDs(id);     
+
+        let neighbour, neighbourColour;
+        for (let i = 0; i < 4; i++) {
+            neighbour = neighbourIDs[i];
+            neighbourColour = this.cells[neighbour].style.backgroundColor;
+            if (baseColour == neighbourColour) {
+                neswBorders[i] = "none";
+            } else {
+                neswBorders[i] = "solid";
+            }
+        }
+
+        let n,e,s,w;
+        [n,e,s,w] = neswBorders;
+
+        this.cells[id].style.borderStyle = `${n} ${e} ${s} ${w}`;
+    }
+
 
     getCols() {
         return this.cols
+    }
+
+    coordsToID(x, y) {
+        return y * this.cols + x;
     }
 
 }

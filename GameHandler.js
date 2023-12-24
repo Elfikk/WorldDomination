@@ -1,5 +1,3 @@
-import { RP2PlayArea, RP2PlayAreaUI } from "./RP2PlayArea.js";
-
 export class GameHandler {
 
     constructor(playArea, playAreaUI) {
@@ -116,8 +114,7 @@ export class GameHandler {
         return [aggressorOwner, 
                 targetOwner,
                 targetID,
-                aggressorWin,
-                this.gameEnded];
+                aggressorWin];
     }
 
 }

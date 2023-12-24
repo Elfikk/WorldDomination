@@ -1,45 +1,35 @@
 import { RP2PlayArea, RP2PlayAreaUI } from "./RP2PlayArea.js";
 import { GameHandler } from "./GameHandler.js";
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-// aggressorOwner, 
-//                 targetOwner,
-//                 targetID,
-//                 aggressorWin,
-//                 this.playArea.gameEnded()
-
 function gamePlay() {
     var gameEnded = gameLogic.gameEnded;
     var i = 0;
     const max_turns = 1;
 
-    let aggressorOwner, targetOwner, targetID, aggressorWin;
+    let aggressorOwner, targetOwner, targetID, aggressorWin, outcome;
 
     while (!gameEnded && i < max_turns) {
-        // console.log("turn="+i);
-        [aggressorOwner, targetOwner, targetID, aggressorWin, gameEnded] = gameLogic.turn();
+        outcome = gameLogic.turn();
+        [aggressorOwner, targetOwner, targetID, aggressorWin] = outcome;
         i++;
+        turns++;
+        gameEnded = gameLogic.gameEnded;
 
         moveSummary.innerHTML = 
-            `${aggressorOwner} attacks ${targetOwner} for ${targetID}. Won? ${aggressorWin}`
+            `Turn ${turns}:${aggressorOwner} attacks ${targetOwner} for ${targetID}. Won? ${aggressorWin}`
     }
 }
 
 function startGame() {
-    setInterval(gamePlay, 20)
+    setInterval(gamePlay, 5)
 }
 
-const cols = 20;
-const rows = 20;
+const rows = 30;
+const cols = 2 * rows; //Nice ratio
+var turns = 0;
 
 var rp2PlayArea = new RP2PlayArea(cols, rows);
 var rp2PlayAreaUI = new RP2PlayAreaUI(cols, rows);
-
-// rp2PlayArea.initialise();
-// rp2PlayAreaUI.initialise();
 
 // console.log(rp2PlayAreaUI.getCols())
 
