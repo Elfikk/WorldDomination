@@ -1,4 +1,6 @@
 export class Graph {
+    // generic graph class using an adjacency list approach
+
     constructor(){
         // Omg it's an empty Map!
         this.AdjList = new Map();
@@ -12,6 +14,7 @@ export class Graph {
     }
 
     addEdge(v, w, undirected = true) {
+        // if graph undirected, adds both edges
         this.AdjList.get(v).push(w);
 
         if (undirected) {
