@@ -185,9 +185,9 @@ export class RP2PlayArea {
             // otherwise, make sure it isn't...
             var owner = this.graph.getData(neighbour);
             if (this.checkContested(neighbour)) {
-                this.playersToContestedLand.get(owner).add(vertexID);
+                this.playersToContestedLand.get(owner).add(neighbour);
             } else {
-                this.playersToContestedLand.get(owner).delete(vertexID);
+                this.playersToContestedLand.get(owner).delete(neighbour);
             }
         }
     }
@@ -242,6 +242,8 @@ export class RP2PlayAreaUI {
             // x = column - 1;
             // y = row - 1;
 
+            // cell.innerHTML = i + "," + i;
+
             var rgbVals = this.gameGradient(i);
             var rgbString = rgbVals.toString();
             var rgbSetter = "rgb(".concat(rgbString).concat(")")    
@@ -268,8 +270,8 @@ export class RP2PlayAreaUI {
         const coords = this.idToCoords(ownerID);
         [x, y] = coords;
      
-        const xPrimed = Math.PI * (x+0.5) / this.cols;
-        const yPrimed = Math.PI * (y+0.5) / this.rows;
+        const xPrimed = Math.PI / 2 * (x+0.5) / this.cols;
+        const yPrimed = Math.PI / 2 * (y+0.5) / this.rows;
     
         const r = 255 * (Math.pow(Math.cos(xPrimed),2));
         const g = 255 * (Math.pow(Math.cos(yPrimed),2));
@@ -284,6 +286,7 @@ export class RP2PlayAreaUI {
         var rgbSetter = "rgb(".concat(rgbString).concat(")")
         
         this.cells[vertexID].style.backgroundColor = rgbSetter;
+        // this.cells[vertexID].innerHTML = vertexID + "," + winnerID;
     }
 
     getCols() {

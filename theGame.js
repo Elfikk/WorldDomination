@@ -5,17 +5,35 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function gamePlay() {
-    for (let i  = 0; i < 10000; i++) {
-        console.log("turn="+i);
-        gameLogic.turn();
-        sleep(1);
-    }    
+// aggressorOwner, 
+//                 targetOwner,
+//                 targetID,
+//                 aggressorWin,
+//                 this.playArea.gameEnded()
 
+function gamePlay() {
+    var gameEnded = gameLogic.gameEnded;
+    var i = 0;
+    const max_turns = 1;
+
+    let aggressorOwner, targetOwner, targetID, aggressorWin;
+
+    while (!gameEnded && i < max_turns) {
+        // console.log("turn="+i);
+        [aggressorOwner, targetOwner, targetID, aggressorWin, gameEnded] = gameLogic.turn();
+        i++;
+
+        moveSummary.innerHTML = 
+            `${aggressorOwner} attacks ${targetOwner} for ${targetID}. Won? ${aggressorWin}`
+    }
 }
 
-const cols = 25;
-const rows = 25;
+function startGame() {
+    setInterval(gamePlay, 20)
+}
+
+const cols = 20;
+const rows = 20;
 
 var rp2PlayArea = new RP2PlayArea(cols, rows);
 var rp2PlayAreaUI = new RP2PlayAreaUI(cols, rows);
@@ -28,6 +46,7 @@ var rp2PlayAreaUI = new RP2PlayAreaUI(cols, rows);
 var gameLogic = new GameHandler(rp2PlayArea, rp2PlayAreaUI);
 gameLogic.setup()
 
+var moveSummary = document.getElementById("move-summariser");
 
 var testButton = document.getElementById("test-button");
-testButton.addEventListener("click", gamePlay);
+testButton.addEventListener("click", startGame);

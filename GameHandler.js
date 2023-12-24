@@ -5,6 +5,7 @@ export class GameHandler {
     constructor(playArea, playAreaUI) {
         this.playArea = playArea;
         this.playAreaUI = playAreaUI;
+        this.gameEnded = false;
     }
 
     setup() {
@@ -47,6 +48,8 @@ export class GameHandler {
 
         // 2
         const aggressorOwner = this.playArea.getOwner(randomID);
+        console.log("initialVertex=" + randomID);
+        console.log("aggressorOwner=" + aggressorOwner);
 
         // 3
 
@@ -57,12 +60,13 @@ export class GameHandler {
             aggressorID = randomID;
         } else {
             //b
-            // console.log(this.playArea.getOwnersContested())
             const contestedLand = Array.from(this.playArea.getOwnersContested(aggressorOwner));
+            console.log("contestedLand=" + contestedLand);
             const maxIndex = contestedLand.length;
             const randomIndex = this.getRandomNum(0, maxIndex-1);
             aggressorID = contestedLand[randomIndex];
         }
+        // console.log("finalAggressorVertex="+aggressorID)
 
         // 4
 
@@ -107,11 +111,13 @@ export class GameHandler {
         }
 
         // 8
+        this.gameEnded = this.playArea.gameEnded();
+
         return [aggressorOwner, 
                 targetOwner,
                 targetID,
                 aggressorWin,
-                this.playArea.gameEnded()];
+                this.gameEnded];
     }
 
 }
