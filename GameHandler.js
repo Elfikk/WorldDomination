@@ -1,3 +1,5 @@
+import { RP2PlayArea, RP2PlayAreaUI } from "./RP2PlayArea.js";
+
 export class GameHandler {
 
     constructor(playArea, playAreaUI) {
@@ -15,6 +17,14 @@ export class GameHandler {
         this.maxID = maxID;
     }
 
+    getRandomNum(a,b) {
+        const multi = b - a + 1;
+        return Math.floor(multi * Math.random() + a);
+    }
+
+    getRandomID() {
+        return this.getRandomNum(this.minID, this.maxID);
+    }
     turn() {
 
         // Turn flow
@@ -47,24 +57,33 @@ export class GameHandler {
             aggressorID = randomID;
         } else {
             //b
-            const contestedLand = Array.from(this.playArea.getOwnersContested());
+            // console.log(this.playArea.getOwnersContested())
+            const contestedLand = Array.from(this.playArea.getOwnersContested(aggressorOwner));
             const maxIndex = contestedLand.length;
-            const randomIndex = this.getRandomNum(0, maxIndex);
+            const randomIndex = this.getRandomNum(0, maxIndex-1);
             aggressorID = contestedLand[randomIndex];
         }
 
         // 4
 
         // Pick target vertex ID.
+
         const potentialTargets = this.playArea.getTargetVertices(aggressorID);
         const maxIndex = potentialTargets.length;
-        const randomIndex = this.getRandomNum(0, maxIndex);
+        const randomIndex = this.getRandomNum(0, maxIndex-1);
         const targetID = potentialTargets[randomIndex];
+        console.log("aggressorTileID=" + aggressorID)
+        console.log("contested?="+ this.playArea.checkContested(aggressorID))
+        console.log("randomTargetIndex=" + randomIndex);
+        console.log("potentialTargets=" + potentialTargets);
 
         // Find target vertex owner.
         const targetOwner = this.playArea.getOwner(targetID);
+        console.log("targetID=" + targetID);
+        console.log("targetOwner=" + targetOwner);
 
         // 5
+
         const aggressorSize = this.playArea.getSize(aggressorOwner);
         const targetSize = this.playArea.getSize(targetOwner);
         const pWin = aggressorSize / (aggressorSize + targetSize);
@@ -95,12 +114,4 @@ export class GameHandler {
                 this.playArea.gameEnded()];
     }
 
-    getRandomNum(a,b) {
-        const multi = b - a + 1;
-        return Math.floor(multi * Math.random() + a);
-    }
-
-    getRandomID() {
-        return this.getRandomNum(this.minID, this.maxID);
-    }
 }

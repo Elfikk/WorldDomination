@@ -64,9 +64,9 @@ function testGraphInput() {
 
 // var gridContainer = document.querySelector('.grid');
 // var nomnom = 25;
-// testGridMaking(nomnom, nomnom);
-var UI = new RP2PlayAreaUI(5, 5);
-UI.initialise(true);
+// testGridMaking(10, 10);
+// var UI = new RP2PlayAreaUI(5, 5);
+// UI.initialise(true);
 
 var testButton = document.getElementById("test-button");
 testButton.addEventListener("click", testGraphInput);

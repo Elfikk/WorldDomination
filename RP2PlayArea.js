@@ -85,6 +85,7 @@ export class RP2PlayArea {
     }
 
     getOwnersContested(id) {
+        // console.log(this);
         return this.playersToContestedLand.get(id);
     }
 
@@ -108,6 +109,8 @@ export class RP2PlayArea {
     }
 
     getSize(ownerID) {
+        // console.log(this);
+        // console.log(ownerID);
         return this.playersToLand.get(ownerID).size
     }
 
@@ -207,7 +210,7 @@ export class RP2PlayAreaUI {
         this.cols = cols
     }
 
-    initialise(textDisplay = false) {
+    initialise() {
 
         // Feel like this is probably poor practice.
         var gridContainer = document.querySelector('.grid');
@@ -215,13 +218,13 @@ export class RP2PlayAreaUI {
 
         let celltot = this.rows * this.cols;
 
-        gridContainer.style.display = '.grid';
+        gridContainer.style.display = 'grid';
         gridContainer.style.gridTemplateRows = `repeat(${this.rows}, 1fr)`;
         gridContainer.style.gridTemplateColumns = `repeat(${this.cols}, 1fr)`;
 
         let row = 1;
         let column = 1;
-        let x, y;
+        // let x, y;
         this.cells = [];
         for (let i = 0; i < celltot; i++) {
             let cell = document.createElement('div');
@@ -232,12 +235,12 @@ export class RP2PlayAreaUI {
             cell.style.gridRow = row;
             cell.style.gridColumn = column;
 
-            console.log(cell.style.gridRow + " " + cell.style.gridColumn);
+            // console.log(cell.style.gridRow + " " + cell.style.gridColumn);
 
             cell.style.color = "#000000";
 
-            x = column - 1;
-            y = row - 1;
+            // x = column - 1;
+            // y = row - 1;
 
             var rgbVals = this.gameGradient(i);
             var rgbString = rgbVals.toString();
@@ -251,7 +254,7 @@ export class RP2PlayAreaUI {
                 row += 1;
                 column = 1;
             }
-            console.log(cell);
+            // console.log(cell);
             gridContainer.appendChild(cell);
         }
     }
@@ -264,11 +267,9 @@ export class RP2PlayAreaUI {
         let x, y;
         const coords = this.idToCoords(ownerID);
         [x, y] = coords;
-
-        // console.log(ownerID + " -> " + coords);
      
-        const xPrimed = Math.PI * (x-0.5) / this.cols;
-        const yPrimed = Math.PI * (y-0.5) / this.rows;
+        const xPrimed = Math.PI * (x+0.5) / this.cols;
+        const yPrimed = Math.PI * (y+0.5) / this.rows;
     
         const r = 255 * (Math.pow(Math.cos(xPrimed),2));
         const g = 255 * (Math.pow(Math.cos(yPrimed),2));
@@ -283,6 +284,10 @@ export class RP2PlayAreaUI {
         var rgbSetter = "rgb(".concat(rgbString).concat(")")
         
         this.cells[vertexID].style.backgroundColor = rgbSetter;
+    }
+
+    getCols() {
+        return this.cols
     }
 
 }
