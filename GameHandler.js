@@ -117,4 +117,8 @@ export class GameHandler {
                 aggressorWin];
     }
 
+    delete() {
+        this.playAreaUI.deleteUI()
+    }
+
 }

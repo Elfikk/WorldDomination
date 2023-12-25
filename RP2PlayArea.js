@@ -208,12 +208,13 @@ export class RP2PlayAreaUI {
     constructor(cols, rows) {
         this.rows = rows
         this.cols = cols
+        this.gridID = '.grid'
     }
 
     initialise() {
 
         // Feel like this is probably poor practice.
-        var gridContainer = document.querySelector('.grid');
+        var gridContainer = document.querySelector(this.gridID);
         // console.log(gridContainer);
 
         this.celltot = this.rows * this.cols;
@@ -258,6 +259,15 @@ export class RP2PlayAreaUI {
             }
             // console.log(cell);
             gridContainer.appendChild(cell);
+            // gridContainer.childElementCount
+        }
+    }
+
+    deleteUI() {
+        var gridContainer = document.querySelector(this.gridID);
+
+        for (let i = 0; i < this.celltot; i++) {
+            gridContainer.removeChild(this.cells[i]);
         }
     }
 

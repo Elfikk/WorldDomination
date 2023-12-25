@@ -9,17 +9,32 @@
 
 <div class = "headers">
     <h1 id = "title">World Domination</h1>
-    <p id = "move-summariser">Next Move</p>
+    <p id = "move-summariser">Turn 0 - All is well 😌</p>
 </div>
 
 <div class = "grid"></div>
 
 <div class = "controls">
-    <button id="test-button">Test</button>
-    <p id="">Size Controls Placeholder</p>
-    <p id="">Run Controls Placeholder</p>
-</div>
+    <!-- <button id="test-button">Test</button> -->
+    <div class = "size-controls">
+        <!-- <p id="">Size Controls Placeholder</p> -->
+        <label for = "cols">Columns - </label>
+        <input type = "number" name = "cols" id = "cols-input" value = 20>
+        <label for = "rows">Rows - </label>
+        <input type = "number" name = "rows" id = "rows-input" value = 10>
+        <!-- <button id="size-button">Populate Grid</button> -->
+    </div>
 
+    <div class = "run-controls">
+        <!-- <p id="">Run Controls Placeholder</p> -->
+        <label for = "interval">Turn Interval (ms) - </label>
+        <input type= "number" name = "interval" value = 20 id = "intervalInput">
+        <br>
+        <button id="run-button">Run</button>
+        <button id="stop-button">Stop</button>
+        <button id="reset-button">Reset</button>
+    </div>
+</div>
 
 </body>
 </html> 
